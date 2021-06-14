@@ -1,3 +1,5 @@
+import sys
+
 
 clients = 'pablo,ricardo,'
 
@@ -38,6 +40,16 @@ def delete_client(client_name):
         print('Client is not in clients list')
 
 
+# Buscar Cliente
+def search_client(client_name):
+    clients_list = clients.split(',')
+
+    for client in clients_list:
+        if client != client_name:
+            continue  # No ejecutar nada mas en el loop e ir a la siguiente iteración
+        else:
+            return True
+
 
 
 # Función auxiliar para añadir coma despues de cada cliente
@@ -57,11 +69,24 @@ def _print_welcome():
     print('[C]reate client')
     print('[U]pdate client')
     print('[D]elete client')
+    print('[S]earch client')
     print()
 
 
 def _get_client_name():
-    return input('What is the client name? ')
+    client_name = None  # Variable vacía
+
+    while not client_name:
+        client_name = input('What is the client name? ')
+
+        if client_name == 'exit':
+            client_name = None
+            break        # si el nombre del cliente es 'exit' entonces salir del programa
+
+    if not client_name:
+        sys.exit()  #  modulo para salir del programa
+    
+    return client_name
 
 if __name__ == '__main__':
     _print_welcome()
@@ -82,6 +107,14 @@ if __name__ == '__main__':
         client_name = _get_client_name()
         delete_client(client_name)
         read_clients()
+    elif command == 'S':
+        client_name = _get_client_name()
+        found = search_client(client_name)
+
+        if found:
+            print('The client is in the client\'s list')
+        else:
+            print(f'The client: {client_name} is not in our client\'s list')
     else:
         print('Invalid command')
 
