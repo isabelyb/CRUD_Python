@@ -1,23 +1,22 @@
 import sys
 
 
-clients = 'pablo,ricardo,'
+clients = ['pablo','ricardo']
 
 # Crear Clientes
 def create_client(client_name):
     global clients # Para tomar variables globales
 
     if client_name not in clients:
-        clients += client_name
-        _add_comma()
-    else: 
+        clients.append(client_name)
+    else:
         print("Client already is in the client's list")
 
 
 # Mostrar a los Clientes
 def read_clients():
-    global clients
-    print(clients)
+    for i, client in enumerate(clients):
+        print(f'{i}:{client}')    
 
 
 # Actualizar clientes
@@ -25,7 +24,8 @@ def update_client(client_name, updated_client_name):
     global clients
 
     if client_name in clients:
-        clients = clients.replace(client_name + ',', updated_client_name + ',')
+        index = clients.index(client_name)
+        clients[index] = updated_client_name
     else:
         print('Client is not in clients list')
 
@@ -35,27 +35,19 @@ def delete_client(client_name):
     global clients
 
     if client_name in clients:
-        clients = clients.replace(client_name + ',', '')
+        clients.remove(client_name)
     else:
         print('Client is not in clients list')
 
 
 # Buscar Cliente
 def search_client(client_name):
-    clients_list = clients.split(',')
-
-    for client in clients_list:
+    
+    for client in clients:
         if client != client_name:
             continue  # No ejecutar nada mas en el loop e ir a la siguiente iteración
         else:
             return True
-
-
-
-# Función auxiliar para añadir coma despues de cada cliente
-def  _add_comma():
-    global clients
-    clients += ','
 
 
 # Función de Menú
@@ -67,6 +59,7 @@ def _print_welcome():
     print('What would you like to do today?')
     print()
     print('[C]reate client')
+    print('[R]ead client')
     print('[U]pdate client')
     print('[D]elete client')
     print('[S]earch client')
@@ -97,6 +90,8 @@ if __name__ == '__main__':
     if command == 'C':
         client_name = _get_client_name()
         create_client(client_name)
+        read_clients()
+    elif command == 'R':
         read_clients()
     elif command == 'U':
         client_name = _get_client_name()
